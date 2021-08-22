@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
      
-    public Animator winPanelAnimator, losePanelAnimator;
+    public TweenAnimsManager winPanel, losePanel;
     public LevelLoader levelLoader;
     public ScoreManager scoreManager;
     public Text loseText;
-    public GameObject playerObj;
+    public GameObject playerObj, flameObj;
     public float panelWaitTime = 1f;
 
     AudioSource audioSource;
@@ -52,7 +52,10 @@ public class GameController : MonoBehaviour
         playerObj.GetComponent<Rotate>().enabled = false;
         playerObj.GetComponent<SpriteRenderer>().enabled = false;
         playerObj.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        playerObj.GetComponent<BoxCollider2D>().enabled = false;
+        playerObj.GetComponent<Rigidbody2D>().gravityScale = 0f;
+        playerObj.GetComponent<BoxCollider2D>().enabled = false; 
+        flameObj.SetActive(false);
+        
     }
      
     IEnumerator WinOrLose(int state)
@@ -61,12 +64,12 @@ public class GameController : MonoBehaviour
 
         if(state == 1)
         {
-            winPanelAnimator.SetBool("isShowing", true);
+            winPanel.PanelIn();
         }
 
         if(state == 2)
-        { 
-            losePanelAnimator.SetBool("isShowing", true);
+        {
+            losePanel.PanelIn();
             audioSource.Play();
         } 
     }
