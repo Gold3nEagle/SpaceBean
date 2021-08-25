@@ -5,8 +5,7 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
 
-    LevelLoader levelLoader; 
-    public GameObject panelObject; 
+    LevelLoader levelLoader;  
 
     private void Start()
     {
@@ -16,8 +15,9 @@ public class MainMenu : MonoBehaviour
         Destroy(otherMusic);
     }
 
-    public void PlayGame()
+    public void PlayGame(int players)
     {
+        PlayerPrefs.SetInt("GamePlayers", players);
         levelLoader.LoadLevel(1);
     }
 

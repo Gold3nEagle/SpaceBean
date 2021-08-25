@@ -9,8 +9,11 @@ public class GameController : MonoBehaviour
 {
      
     public TweenAnimsManager winPanel, losePanel;
+
     public LevelLoader levelLoader;
     public ScoreManager scoreManager;
+    public CameraController cameraController;
+
     public Text loseText;
     public GameObject playerOne, flameOne, playerTwo, flameTwo;
     public float panelWaitTime = 1f;
@@ -35,32 +38,22 @@ public class GameController : MonoBehaviour
 
     public void LoseGame()
     {
+
+        StopPlayer(playerOne, flameOne);
+        StopPlayer(playerTwo, flameTwo);
         StartCoroutine(WinOrLose(2));
         audioSource.clip = clips[1]; 
     }
-
-    public void ChangeLoseText(string loseString)
-    {
-        loseText.text = loseString;
-        StopPlayer(playerOne, flameOne);
-        StopPlayer(playerTwo, flameTwo);
-        LoseGame(); 
-    }
-
+     
     public void KillPlayer(int playerNum)
     {
+        cameraController.RemoveOrAdd(GroupState.RemoveMember, playerNum);
         if(playerNum == 1) StopPlayer(playerOne, flameOne);
         if (playerNum == 2) StopPlayer(playerTwo, flameTwo);
 
         if (!flameOne.activeInHierarchy && !flameTwo.activeInHierarchy) LoseGame(); 
     }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0)) KillPlayer(1);
-        if (Input.GetMouseButtonDown(1)) KillPlayer(2);
-    }
-
+ 
     void StopPlayer(GameObject playerObj, GameObject flameObj)
     {
         playerObj.GetComponent<Push>().enabled = false;

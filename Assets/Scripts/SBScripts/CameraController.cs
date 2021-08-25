@@ -3,30 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+
+public enum GroupState
+{
+    RemoveMember,
+    AddMember
+}
+
 public class CameraController : MonoBehaviour
 {
      
     public Transform playerOne, playerTwo;
     CinemachineTargetGroup targetGroup;
+    GroupState state;
 
-    private void Start()
+    private void Awake()
     {
         targetGroup = GetComponent<CinemachineTargetGroup>(); 
     }
-  
-    // Update is called once per frame
+
+    public void RemoveOrAdd(GroupState state, int player)
+    {
+
+        if (state == GroupState.RemoveMember)
+        {
+            if (player == 1)
+                targetGroup.RemoveMember(playerOne);
+            else
+                targetGroup.RemoveMember(playerTwo);
+        }
+
+        if (state == GroupState.AddMember)
+            if(player == 1)
+                targetGroup.AddMember(playerOne, 1, 0);
+            else
+                targetGroup.AddMember(playerTwo, 1, 0);
+    }
+
+     
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-            targetGroup.RemoveMember(playerTwo);
+        //if (Input.GetMouseButtonDown(0))
+        //    RemoveOrAdd(GroupState.RemoveMember, 2);
 
-        if (Input.GetMouseButtonDown(1))
-            targetGroup.RemoveMember(playerOne);
+        //if (Input.GetMouseButtonDown(1))
+        //    RemoveOrAdd(GroupState.RemoveMember, 1);
 
-        if (Input.GetMouseButtonDown(2))
-            targetGroup.AddMember(playerOne, 1, 0);
-
-        if (Input.GetMouseButtonDown(3))
-            targetGroup.AddMember(playerTwo, 1, 0); 
     }
 }
